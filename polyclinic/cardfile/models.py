@@ -22,6 +22,7 @@ class Social_status(models.Model):
     Модель, представляющая социальный статус пациента (учащийся, работающий, временно неработающий, инвалид, пенсионер)
     """
     status = models.CharField(
+        'Социальный статус:',
         max_length=200, 
         help_text="Введите социальный статус пациента (учащийся, работающий, временно неработающий, инвалид, пенсионер)")
 
@@ -43,9 +44,12 @@ class Pacient(models.Model):
     """
     Модель, представляющая пациента
     """
-    name = models.CharField(max_length=200)
+    name = models.CharField(
+        'ФИО:',
+        max_length=200)
 
     date_of_birth = models.DateField(
+        'Дата рожения:',
         null=True, 
         blank=True)
 
@@ -62,13 +66,19 @@ class Pacient(models.Model):
     )
 
     condition = models.CharField(
+        'Состояние пациента:',
         max_length=1, 
         choices=PACIENT_CONDITION, 
-        blank=True, default='t', 
-        help_text='состояние пациента')    
+        blank=True, default='t')        
+
+    date_of_death = models.DateField(
+        'Дата смерти:',
+        null=True,
+        blank=True,
+        help_text='(необязательно)')
 
     def get_absolute_url(self):
-        return reverse('pacient-detail', args=[str(self.id)])
+        return reverse('pacient-detail', args=[str(self)])
 
 
     def __str__(self):
@@ -99,11 +109,11 @@ class Doctor(models.Model):
         null=True) 
 
     def get_absolute_url(self):
-        return reverse('doctor-detail', args=[str(self.id)])
+        return reverse('doctor-detail', args=[str(self)])
 
 
     def __str__(self):
-        return self.name
+        return '{0} ({1} - {2})'.format(self.name, self.doc_specialty, self.QUALIFICATION_LEVEL[2-int(self.qualification)][1])
 
 class Treatment_history(models.Model):
     """
@@ -144,15 +154,9 @@ class Treatment_history(models.Model):
         blank=True,
         help_text='Дата конца лечения')
 
-    date_of_death = models.DateField(
-        'Died',
-        null=True,
-        blank=True,
-        help_text='Дата смерти (необязательно)')
-
     def get_absolute_url(self):
         return reverse('doctor-detail', args=[str(self.id)])
 
 
     def __str__(self):
-        return '{0} ({1})'.format(self.id, self.pac_name.name)
+        return '{0} : {1} ({2})'.format(self.start_date_of_treatment, self.pac_name.name, self.diagnosis)
