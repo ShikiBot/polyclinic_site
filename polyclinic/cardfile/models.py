@@ -78,7 +78,7 @@ class Pacient(models.Model):
         help_text='(необязательно)')
 
     def get_absolute_url(self):
-        return reverse('pacient-detail', args=[str(self)])
+        return reverse('pacient-detail', args=[str(self.id)])
 
 
     def __str__(self):
@@ -109,7 +109,7 @@ class Doctor(models.Model):
         null=True) 
 
     def get_absolute_url(self):
-        return reverse('doctor-detail', args=[str(self)])
+        return reverse('doctor-detail', args=[str(self.id)])
 
 
     def __str__(self):

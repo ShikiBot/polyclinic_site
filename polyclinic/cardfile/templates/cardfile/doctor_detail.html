@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ doctor }}</h1>
+
+  <p><strong>Author:</strong> <a href="">{{ doctor.name }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Summary:</strong> {{ doctor.qualification }}</p>
+  <p><strong>ISBN:</strong> {{ doctor.doc_specialty }}</p>
+{% endblock %}
