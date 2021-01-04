@@ -41,3 +41,25 @@ class DoctorDetailView(generic.DetailView):
             'cardfile/doctor_detail.html',
             context={'doc':doc_id,}
         )
+
+class PacientListView(generic.ListView):
+    model = Pacient
+    paginate_by = 20
+
+    def get_queryset(self):    
+        return Pacient.objects.all()
+
+class PacientDetailView(generic.DetailView):
+    model = Pacient
+
+    def doc_detail_view(request, pk):
+        try:
+            pac_id=Pacient.objects.get(pk=pk)
+        except Pacient.DoesNotExist:
+            raise Http404("Pacient does not exist")
+
+        return render(
+            request,
+            'cardfile/pacient_detail.html',
+            context={'pac':pac_id,}
+        )

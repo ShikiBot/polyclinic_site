@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ pacient }}</h1>  
+  {{ pacient.date_of_birth }} {% if pacient.date_of_death != None %} - {{ pacient.date_of_death }} {% endif %}<br>
+  {{ pacient.soc_status }}
+
+  {% for copy in pacient.Treatmenthistory_set.all %}
+    asdda
+  {% endfor %}
+
+{% endblock %}
