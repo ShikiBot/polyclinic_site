@@ -77,6 +77,9 @@ class Pacient(models.Model):
         blank=True,
         help_text='(необязательно)')
 
+    class Meta:
+        ordering = ['name']
+
     def get_absolute_url(self):
         return reverse('pacient-detail', args=[str(self.id)])
 
@@ -107,6 +110,9 @@ class Doctor(models.Model):
         'Doctors_specialty', 
         on_delete=models.SET_NULL,
         null=True) 
+    
+    class Meta:
+        ordering = ['doc_specialty']
 
     def get_absolute_url(self):
         return reverse('doctor-detail', args=[str(self.id)])

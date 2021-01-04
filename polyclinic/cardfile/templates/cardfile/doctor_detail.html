@@ -1,15 +1,45 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Title: {{ doctor }}</h1>
+  <h1>{{ doctor }}</h1>
 
   <div style="margin-left:20px;margin-top:20px">
-    <h4>Copies</h4>
-    {{doctor.Treatment_history_set.all}}
-    {% for copy in doctor.Treatment_history_set.all %}
-    <hr>
-    <!--{% if copy.status != 'a' %}<p><strong>Due to be returned:</strong> {{copy.due_back}}</p>{% endif %}-->
-    <p><strong>Imprint:</strong> {{copy}}</p>
+    <h4>История пациентов</h4>
+    {% for copy in doctor.treatment_history_set.all %}
+      <hr>
+      <p><strong>{{copy.start_date_of_treatment}}
+        {% if copy.end_date_of_treatment != None %} 
+          - {{ copy.end_date_of_treatment }} 
+        {% endif %}</strong></p>        
+      <p><strong>Пациент:</strong> <a href="{% url 'pacient-detail' copy.pac_name.pk %}">{{copy.pac_name}}</a></p>
+      <p><strong>Диагноз:</strong> {{copy.diagnosis}}</p>
+      <p><strong>Амбулаторное лечение:</strong> 
+        <abbr class="
+          {% if copy.ambulatory == True %}
+            text-success
+          {% else %}
+            text-danger
+          {% endif %}">
+          {% if copy.ambulatory == True %}
+            Да
+          {% else %}
+            Нет
+          {% endif %}
+        </abbr></p>
+      <p><strong>Диспансерный учет:</strong> 
+        <abbr class="
+          {% if copy.dispensary == True %}
+            text-success
+          {% else %}
+            text-danger
+          {% endif %}">
+          {% if copy.dispensary == True %}
+            Да
+          {% else %}
+            Нет
+          {% endif %}
+        </abbr></p>
     {% endfor %}
   </div>
+
 {% endblock %}
