@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^doctor/(?P<pk>\d+)$', views.DoctorDetailView.as_view(), name='doctor-detail'),
     url(r'^pacients/$', views.PacientListView.as_view(), name='pacients'),
     url(r'^pacient/(?P<pk>\d+)$', views.PacientDetailView.as_view(), name='pacient-detail'),
+    
 ]

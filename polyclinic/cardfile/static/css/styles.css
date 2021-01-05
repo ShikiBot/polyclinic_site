@@ -1,7 +1,10 @@
+body {
+    background-color:lightsteelblue;
+}
+
 .container-fluid{
     width: 100vw;
     height: 100vh;
-    background: rosybrown;
 }
 
 .row{
@@ -17,19 +20,20 @@
     margin-top: 10%;
     padding: 20px;
     list-style: none;
-    border: 4px black;
     background: #1976D2;
+    opacity: 0.95;
+    border: 1px solid blue;
+    border-radius: 10px;
     height: 100%; 
 }
 
 .col-sm-10{
-    border: 4px double black;
     padding-left: 20%;
     padding-top: 3%;
 }
 
 a{
-    color: white;
+    color:floralwhite;
 }
 
 a:hover{
@@ -37,5 +41,5 @@ a:hover{
 }
 
 a:visited{
-    color: gold;
+    color:navy;
 }

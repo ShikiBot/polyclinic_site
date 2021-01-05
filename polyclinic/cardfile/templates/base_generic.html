@@ -38,10 +38,18 @@
       <div class="col-sm-2">
         {% block sidebar %}
         <ul class="sidebar-nav">
+            <center><img src="{% static 'krest.png' %}" width="150" height="150"></center><br>            
             <li><a href="{% url 'index' %}">Домашняя страница</a></li>
             <li><a href="{% url 'doctors' %}">Все врачи</a></li>
             <li><a href="{% url 'pacients' %}">Все пациенты</a></li><br>
             <li><a href="/admin">Админка</a></li>
+            <hr>         
+            {% if user.is_authenticated %}
+              User: {{ user.get_username }}
+              (<a href="{% url 'logout'%}?next={{request.path}}">Logout</a>)
+            {% else %}
+              <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+            {% endif %} 
         </ul>
        {% endblock %}
         </div>
