@@ -1,0 +1,51 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ pacient }}</h1>  
+  {{ pacient.date_of_birth }} 
+    {% if pacient.date_of_death != None %} 
+      - {{ pacient.date_of_death }} 
+    {% endif %}<br>
+  {{ pacient.soc_status }}
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>История болезней пациента</h4>
+    {% for copy in pacient.treatment_history_set.all %}
+      <hr>
+      <p><strong>{{copy.start_date_of_treatment}}
+        {% if copy.end_date_of_treatment != None %} 
+          - {{ copy.end_date_of_treatment }} 
+        {% endif %}</strong></p>        
+      <p><strong>Лечащий врач:</strong> <a href="{% url 'doctor-detail' copy.doc_name.pk %}">{{copy.doc_name}}</a></p>
+      <p><strong>Диагноз:</strong> {{copy.diagnosis}}</p>
+      <p><strong>Симптомы:</strong> {{copy.description}}</p>
+      <p><strong>Амбулаторное лечение:</strong> 
+        <abbr class="
+          {% if copy.ambulatory == True %}
+            text-success
+          {% else %}
+            text-danger
+          {% endif %}">
+          {% if copy.ambulatory == True %}
+            Да
+          {% else %}
+            Нет
+          {% endif %}
+        </abbr></p>
+      <p><strong>Диспансерный учет:</strong> 
+        <abbr class="
+          {% if copy.dispensary == True %}
+            text-success
+          {% else %}
+            text-danger
+          {% endif %}">
+          {% if copy.dispensary == True %}
+            Да
+          {% else %}
+            Нет
+          {% endif %}
+        </abbr></p>
+    {% endfor %}
+  </div>
+
+{% endblock %}

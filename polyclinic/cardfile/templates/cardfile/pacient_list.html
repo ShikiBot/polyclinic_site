@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>pacient_list</h1>
+
+    {% if object_list %}
+    <ul>
+
+      {% for pac in object_list %}
+      <li>
+        <a href="{{ pac.get_absolute_url }}">{{ pac.name }}</a> 
+        (
+          {% if pac.condition == 't' %} лечится {% endif %} 
+          {% if pac.condition == 'c' %} вылечился {% endif %} 
+          {% if pac.condition == 'h' %} направлен в стационар {% endif %} 
+          {% if pac.condition == 'd' %} умер {% endif %} 
+        )
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no books in the library.</p>
+    {% endif %} 
+{% endblock %}

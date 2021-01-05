@@ -77,8 +77,11 @@ class Pacient(models.Model):
         blank=True,
         help_text='(необязательно)')
 
+    class Meta:
+        ordering = ['name']
+
     def get_absolute_url(self):
-        return reverse('pacient-detail', args=[str(self)])
+        return reverse('pacient-detail', args=[str(self.id)])
 
 
     def __str__(self):
@@ -89,6 +92,11 @@ class Doctor(models.Model):
     Модель, представляющая врача
     """
     name = models.CharField(max_length=200) 
+
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL,
+        null=True)
 
     QUALIFICATION_LEVEL = (
         ('2', 'Вторая квалификационная категория'),
@@ -107,9 +115,12 @@ class Doctor(models.Model):
         'Doctors_specialty', 
         on_delete=models.SET_NULL,
         null=True) 
+    
+    class Meta:
+        ordering = ['doc_specialty']
 
     def get_absolute_url(self):
-        return reverse('doctor-detail', args=[str(self)])
+        return reverse('doctor-detail', args=[str(self.id)])
 
 
     def __str__(self):
