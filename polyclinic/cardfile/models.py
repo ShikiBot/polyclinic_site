@@ -93,6 +93,11 @@ class Doctor(models.Model):
     """
     name = models.CharField(max_length=200) 
 
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL,
+        null=True)
+
     QUALIFICATION_LEVEL = (
         ('2', 'Вторая квалификационная категория'),
         ('1', 'Первая квалификационная категория'),

@@ -14,11 +14,13 @@ class PacientInline(admin.TabularInline):
 class DoctorAdmin(admin.ModelAdmin):
     list_display = (
         'name', 
+        'user',
         'qualification', 
         'doc_specialty'
     )
     fields = [
         'name', 
+        'user',
         (
             'doc_specialty', 
             'qualification'
