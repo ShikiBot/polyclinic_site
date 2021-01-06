@@ -1,36 +1,37 @@
 from django.shortcuts import render
 from .models import Doctors_specialty, Social_status, Diagnosis, Pacient, Doctor, Treatment_history
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin 
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView 
+
 
 def index(request):
-    """
-    Функция отображения для домашней страницы сайта.
-    """
-    num_doctors = Doctor.objects.all().count()
-    num_pacients = Pacient.objects.filter(condition__exact='t').count()
-    num_treatments = Treatment_history.objects.count()
-
     return render(
         request,
         'index.html',
-        context={
-            'num_pacients': num_pacients,
-            'num_doctors': num_doctors,
-            'num_treatments': num_treatments,
-        },
+        context={}
     )
 
 class DoctorListView(generic.ListView):
     model = Doctor
     paginate_by = 20
 
-    def get_queryset(self):    
-        return Doctor.objects.all() # Получение 5 книг, содержащих слово 'war' в заголовке
+    def get_queryset(self, queryset=None):
+        try:
+            if self.kwargs['stub'] == 'all':
+                return Doctor.objects.all()
+            elif self.kwargs['stub'][0] == 'k':
+                return Doctor.objects.filter(qualification__exact=self.kwargs['stub'][1]).order_by('name')
+            elif self.kwargs['stub'][0] == 's':
+                return Doctor.objects.filter(doc_specialty__exact=self.kwargs['stub'][1:]).order_by('name')
+        except Doctor.DoesNotExist:
+            raise Http404("Такого фильтра не существует")
 
 class DoctorDetailView(generic.DetailView):
     model = Doctor
 
-    def doc_detail_view(request, pk):
+    def doc_detail_view(self, request, pk):
         try:
             doc_id=Doctor.objects.get(pk=pk)
         except Doctor.DoesNotExist:
@@ -46,13 +47,19 @@ class PacientListView(generic.ListView):
     model = Pacient
     paginate_by = 20
 
-    def get_queryset(self):    
-        return Pacient.objects.all()
+    def get_queryset(self, queryset=None):
+        try:
+            if self.kwargs['stub'] == 'all':
+                return Pacient.objects.all().order_by('name')
+            else:
+                return Pacient.objects.filter(condition__exact=self.kwargs['stub']).order_by('name')
+        except Pacient.DoesNotExist:
+            raise Http404("Такого фильтра не существует")
 
 class PacientDetailView(generic.DetailView):
     model = Pacient
 
-    def doc_detail_view(request, pk):
+    def pac_detail_view(self, request, pk):
         try:
             pac_id=Pacient.objects.get(pk=pk)
         except Pacient.DoesNotExist:
@@ -63,3 +70,61 @@ class PacientDetailView(generic.DetailView):
             'cardfile/pacient_detail.html',
             context={'pac':pac_id,}
         )
+
+class TreatmentHistoryListView(generic.ListView):
+    model = Treatment_history
+    paginate_by = 20
+
+    def get_queryset(self, queryset=None):  
+        try:
+            if self.kwargs['stub'] == 'all':
+                return Treatment_history.objects.all()
+            else:
+                return Treatment_history.objects.filter(diagnosis__exact=self.kwargs['stub'])
+        except Treatment_history.DoesNotExist:
+            raise Http404("Такого фильтра не существует")      
+
+class TreatmentDetailView(generic.DetailView):
+    model = Treatment_history
+
+    def pac_detail_view(self, request, pk):
+        print('*********************************************')
+        try:
+            hist_id=Treatment_history.objects.get(pk=1) #1 - для теста
+        except Treatment_history.DoesNotExist:
+            raise Http404("Записи не существует")
+
+        return render(
+            request,
+            'cardfile/treatment_history_detail.html',
+            context={'hist':hist_id,}
+        )
+
+
+def HistoryDetailView(request, pk):
+    print('=================================================')
+    try:
+        hist_id=Treatment_history.objects.get(pk=pk)
+    except Treatment_history.DoesNotExist:
+        raise Http404("Записи не существует")
+    return render(
+        request,
+        'cardfile/treatment_history_detail.html',
+        context={'hist': hist_id ,}
+    )
+
+class PacientCreate(CreateView):
+    model = Pacient
+    fields = '__all__'
+
+class PacientUpdate(UpdateView):
+    model = Pacient
+    fields = '__all__'
+
+class TreatmentHistoryCreate(CreateView):
+    model = Treatment_history
+    fields = '__all__'
+
+class TreatmentHistoryUpdate(UpdateView):
+    model = Treatment_history
+    fields = '__all__'

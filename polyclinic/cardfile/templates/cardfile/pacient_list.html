@@ -1,8 +1,21 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>pacient_list</h1>
-
+{% if user.is_authenticated %}
+    <h1>Список пациентов</h1>    
+    <div class="filter">
+      <form>      
+        <select name="java-navigator" onchange="top.location.href = this.options[this.selectedIndex].value;">
+          <option value="">фильтр</option>
+          <option value="all">Все</option>
+          <option value="t">Лечится</option>
+          <option value="c">Вылечился</option>
+          <option value="h">Направлен в стационар</option>
+          <option value="d">Умер</option>
+        </select>      
+      </form>
+      <a href="{% url 'pacient_create' %}">Добавить пациента</a> 
+    </div>
     {% if object_list %}
     <ul>
 
@@ -20,6 +33,9 @@
 
     </ul>
     {% else %}
-      <p>There are no books in the library.</p>
+      <p>Здесь нет ни одного пациента</p>
     {% endif %} 
+{% else %}
+  Вы не залогинены на этом сайте <u><a href="{% url 'login'%}?next={{request.path}}">залогиниться</a></u>
+{% endif %}  
 {% endblock %}

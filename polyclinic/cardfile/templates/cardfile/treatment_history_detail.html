@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <h1>{{ hist }}</h1>
+  <p><a href="{% url 'treatment_history_update' hist.pk %}">Изменить информацию о лечении</a></p>
+  <hr>
+  <div style="margin-left:20px;margin-top:20px">
+    <p><strong>{{hist.start_date_of_treatment}}
+      {% if hist.end_date_of_treatment != None %} 
+        - {{ hist.end_date_of_treatment }} 
+      {% endif %}</strong></p>     
+    <p><strong>Пациент:</strong> <a href="{% url 'pacient-detail' hist.pac_name.pk %}">{{ hist.pac_name }}</a></p>
+    <p><strong>Лечащий врач:</strong> <a href="{% url 'doctor-detail' hist.doc_name.pk %}">{{hist.doc_name}}</a></p>
+    <p><strong>Диагноз:</strong> {{hist.diagnosis}}</p>
+    <p><strong>Симптомы:</strong> {{hist.description}}</p>
+    <p><strong>Амбулаторное лечение:</strong> 
+      <abbr class="
+        {% if hist.ambulatory == True %}
+          text-success
+        {% else %}
+          text-danger
+        {% endif %}">
+        {% if hist.ambulatory == True %}
+          Да
+        {% else %}
+          Нет
+        {% endif %}
+      </abbr></p>
+    <p><strong>Диспансерный учет:</strong> 
+      <abbr class="
+        {% if hist.dispensary == True %}
+          text-success
+        {% else %}
+          text-danger
+        {% endif %}">
+        {% if hist.dispensary == True %}
+          Да
+        {% else %}
+          Нет
+        {% endif %}
+      </abbr></p>
+    </div>
+  <a href="{% url 'treatment_history' 'all'%}">Вернуться</a>
+{% else %}
+  Вы не залогинены на этом сайте <u><a href="{% url 'login'%}?next={{request.path}}">залогиниться</a></u>
+{% endif %} 
+{% endblock %}

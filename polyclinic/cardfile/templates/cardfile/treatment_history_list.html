@@ -1,0 +1,46 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>История лечений</h1>
+    <div class="filter">
+      <form>      
+        <select name="java-navigator" onchange="top.location.href = this.options[this.selectedIndex].value;">
+          <option value="">фильтр</option>
+          <option value="all">Все</option>
+          <option value="1">Алкоголизм</option>
+          <option value="2">Болезнь почек</option>
+          <option value="3">Варикоз</option>
+          <option value="4">Гайморит</option>
+          <option value="5">Гастрит</option>
+          <option value="6">Герпес</option>
+          <option value="7">Дерматит</option>
+          <option value="8">Диарея</option>
+          <option value="9">Панкреатит</option>
+          <option value="10">Пневмония</option>
+          <option value="11">Свинка</option>
+          <option value="12">Синдром Дауна</option>
+          <option value="13">Хронический артрит</option>
+          <option value="14">Хронический стресс</option>
+          <option value="15">Хроническая стенокардия</option>
+          <option value="16">Язвенная болезнь</option>
+        </select>      
+      </form>
+      <a href="{% url 'treatment_create' %}">Добавить случай</a> 
+    </div>
+    {% if object_list %}
+    <ul>
+      {% for hist in object_list %}
+      <li>
+        <a href="{{ hist.get_absolute_url }}">{{hist}}</a>         
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>Здесь нет ни одной записи</p>
+    {% endif %}
+{% else %}
+  Вы не залогинены на этом сайте <u><a href="{% url 'login'%}?next={{request.path}}">залогиниться</a></u>
+{% endif %}   
+{% endblock %}

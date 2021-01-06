@@ -1,8 +1,30 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>doctor_list</h1>
-
+{% if user.is_authenticated %}
+    <h1>Список врачей</h1>
+    <div class="filter">
+      <form>      
+        <select name="java-navigator" onchange="top.location.href = this.options[this.selectedIndex].value;">
+          <option value="">фильтр</option>
+          <option value="all">Все</option>
+          <option value="k2">Вторая квалификационная категория</option>
+          <option value="k1">Первая квалификационная категория</option>
+          <option value="k0">Высшая квалификационная категория</option>
+          <option value="s1">Хирург</option>
+          <option value="s2">Фельдшер</option>
+          <option value="s3">Терапевт</option>
+          <option value="s4">Стоматолог</option>
+          <option value="s5">Рентгенолог</option>
+          <option value="s6">Психотерапевт</option>
+          <option value="s7">Психиатр</option>
+          <option value="s8">Отоларинголог</option>
+          <option value="s9">Нарколог</option>
+          <option value="s10">Гинеколог</option>
+          <option value="s11">Педиатр</option>
+        </select>      
+      </form>
+    </div>
     {% if object_list %}
     <ul>
 
@@ -14,6 +36,9 @@
 
     </ul>
     {% else %}
-      <p>There are no books in the library.</p>
-    {% endif %} 
+      <p>Здесь нет ни одного врача</p>
+    {% endif %}
+{% else %}
+  Вы не залогинены на этом сайте <u><a href="{% url 'login'%}?next={{request.path}}">залогиниться</a></u>
+{% endif %}
 {% endblock %}
