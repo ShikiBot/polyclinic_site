@@ -16,7 +16,7 @@
     <div class="header">
       {% if user.is_authenticated %}
         User: {{ user.get_username }}
-        (<a href="{% url 'logout'%}?next=/">Logout</a>)
+        (<a href="{% url 'logout'%}?next={% url 'login'%}">Logout</a>)
       {% else %}
         <li><a href="{% url 'login'%}?next=/">Login</a></li>
       {% endif %} 
