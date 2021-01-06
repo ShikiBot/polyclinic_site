@@ -7,9 +7,21 @@ body {
     height: 100vh;
 }
 
+.header{
+    margin-left: -20px;
+    margin-right: -15px;
+    padding-right: 20px;
+    padding-top: 5px;
+    background: blue;
+    text-align: right;
+    height: 30px;
+    color: white;
+    vertical-align: middle 
+}
+
 .row{
     width: 100%;
-    height: 100%;
+    height: 97%;
 }
 
 .col-sm-2{
@@ -30,6 +42,32 @@ body {
 .col-sm-10{
     padding-left: 20%;
     padding-top: 3%;
+}
+
+.filter{
+    position: absolute;
+    right: 10px;
+}
+
+.AAA{
+    padding: 50px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    opacity: 0.95;
+    background: #3c88d4;
+    width:fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.AAA input[type=submit] {
+    width: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background:lightsteelblue; 
+    border:0 none;
+    cursor:pointer;
+    border-radius: 5px; 
 }
 
 a{

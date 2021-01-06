@@ -6,7 +6,9 @@
     {% if pacient.date_of_death != None %} 
       - {{ pacient.date_of_death }} 
     {% endif %}<br>
-  {{ pacient.soc_status }}
+  {{ pacient.soc_status }}<br>
+
+  <a href="{% url 'pacient_update' pacient.pk %}">Изменить информацию о пациенте</a> 
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>История болезней пациента</h4>

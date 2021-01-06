@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Список </h1>
+    {% if object_list %}
+    <ul>
+
+      {% for trt in object_list %}
+      <li>
+        <a href="{{ trt.get_absolute_url }}">{{trt}}</a>         
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>Здесь нет ни одной записи</p>
+    {% endif %} 
+{% endblock %}

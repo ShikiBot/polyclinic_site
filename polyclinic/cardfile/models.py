@@ -164,9 +164,12 @@ class Treatment_history(models.Model):
         null=True,
         blank=True,
         help_text='Дата конца лечения')
+    
+    class Meta:
+        ordering = ['start_date_of_treatment']
 
     def get_absolute_url(self):
-        return reverse('doctor-detail', args=[str(self.id)])
+        return reverse('treatment_history_detail', args=[str(self.id)])
 
 
     def __str__(self):
