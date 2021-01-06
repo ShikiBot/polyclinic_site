@@ -75,23 +75,43 @@ class TreatmentHistoryListView(generic.ListView):
     model = Treatment_history
     paginate_by = 20
 
-    def get_queryset(self):        
-        return Treatment_history.objects.all()  
+    def get_queryset(self, queryset=None):  
+        try:
+            if self.kwargs['stub'] == 'all':
+                return Treatment_history.objects.all()
+            else:
+                return Treatment_history.objects.filter(diagnosis__exact=self.kwargs['stub'])
+        except Treatment_history.DoesNotExist:
+            raise Http404("Такого фильтра не существует")      
 
-class TreatmentHistoryDetailView(generic.DetailView):
+class TreatmentDetailView(generic.DetailView):
     model = Treatment_history
 
-    def hist_detail_view(self, request, pk):
+    def pac_detail_view(self, request, pk):
+        print('*********************************************')
         try:
-            hist_id=Treatment_history.objects.get(pk=pk)
+            hist_id=Treatment_history.objects.get(pk=1) #1 - для теста
         except Treatment_history.DoesNotExist:
-            raise Http404("Книги не существует")
-        
+            raise Http404("Записи не существует")
+
         return render(
             request,
             'cardfile/treatment_history_detail.html',
             context={'hist':hist_id,}
         )
+
+
+def HistoryDetailView(request, pk):
+    print('=================================================')
+    try:
+        hist_id=Treatment_history.objects.get(pk=pk)
+    except Treatment_history.DoesNotExist:
+        raise Http404("Записи не существует")
+    return render(
+        request,
+        'cardfile/treatment_history_detail.html',
+        context={'hist': hist_id ,}
+    )
 
 class PacientCreate(CreateView):
     model = Pacient
@@ -102,5 +122,9 @@ class PacientUpdate(UpdateView):
     fields = '__all__'
 
 class TreatmentHistoryCreate(CreateView):
+    model = Treatment_history
+    fields = '__all__'
+
+class TreatmentHistoryUpdate(UpdateView):
     model = Treatment_history
     fields = '__all__'

@@ -1,53 +1,33 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+{% if user.is_authenticated %}
   <h1>{{ pacient }}</h1>  
+  <a href="{% url 'pacient_update' pacient.pk %}">Изменить информацию о пациенте</a><br><br> 
   {{ pacient.date_of_birth }} 
     {% if pacient.date_of_death != None %} 
       - {{ pacient.date_of_death }} 
     {% endif %}<br>
-  {{ pacient.soc_status }}<br>
-
-  <a href="{% url 'pacient_update' pacient.pk %}">Изменить информацию о пациенте</a> 
+  {{ pacient.soc_status }},
+  {% if pacient.condition == 't' %}
+    на лечении
+  {% elif pacient.condition == 'c' %}
+    здоров
+  {% elif pacient.condition == 'h' %}
+    направлен в стационар
+  {% elif pacient.condition == 'd' %}
+    мертв
+  {% endif %}
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>История болезней пациента</h4>
     {% for copy in pacient.treatment_history_set.all %}
       <hr>
-      <p><strong>{{copy.start_date_of_treatment}}
-        {% if copy.end_date_of_treatment != None %} 
-          - {{ copy.end_date_of_treatment }} 
-        {% endif %}</strong></p>        
-      <p><strong>Лечащий врач:</strong> <a href="{% url 'doctor-detail' copy.doc_name.pk %}">{{copy.doc_name}}</a></p>
-      <p><strong>Диагноз:</strong> {{copy.diagnosis}}</p>
-      <p><strong>Симптомы:</strong> {{copy.description}}</p>
-      <p><strong>Амбулаторное лечение:</strong> 
-        <abbr class="
-          {% if copy.ambulatory == True %}
-            text-success
-          {% else %}
-            text-danger
-          {% endif %}">
-          {% if copy.ambulatory == True %}
-            Да
-          {% else %}
-            Нет
-          {% endif %}
-        </abbr></p>
-      <p><strong>Диспансерный учет:</strong> 
-        <abbr class="
-          {% if copy.dispensary == True %}
-            text-success
-          {% else %}
-            text-danger
-          {% endif %}">
-          {% if copy.dispensary == True %}
-            Да
-          {% else %}
-            Нет
-          {% endif %}
-        </abbr></p>
+      <p><strong><a href="{% url 'treatment_history_detail' copy.pk %}">{{copy}}</a></strong></p>      
     {% endfor %}
   </div>
-
+  <a href="{% url 'pacients' 'all' %}">Вернуться</a>
+{% else %}
+  Вы не залогинены на этом сайте <u><a href="{% url 'login'%}?next={{request.path}}">залогиниться</a></u>
+{% endif %}
 {% endblock %}
