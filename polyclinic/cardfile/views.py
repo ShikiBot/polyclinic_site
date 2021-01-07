@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView 
 
-
 def index(request):
     return render(
         request,
@@ -79,7 +78,9 @@ class TreatmentHistoryListView(generic.ListView):
         try:
             if self.kwargs['stub'] == 'all':
                 return Treatment_history.objects.all()
-            else:
+            elif self.kwargs['stub'] == 'my':
+                return Treatment_history.objects.filter(doc_name=Doctor.objects.filter(user=self.request.user)[0].id) 
+            else: 
                 return Treatment_history.objects.filter(diagnosis__exact=self.kwargs['stub'])
         except Treatment_history.DoesNotExist:
             raise Http404("Такого фильтра не существует")      
@@ -112,6 +113,7 @@ def HistoryDetailView(request, pk):
         'cardfile/treatment_history_detail.html',
         context={'hist': hist_id ,}
     )
+
 
 class PacientCreate(CreateView):
     model = Pacient
