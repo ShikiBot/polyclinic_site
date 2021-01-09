@@ -4,6 +4,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin 
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView 
+import datetime
 
 def index(request):
     return render(
@@ -79,7 +80,10 @@ class TreatmentHistoryListView(generic.ListView):
             if self.kwargs['stub'] == 'all':
                 return Treatment_history.objects.all()
             elif self.kwargs['stub'] == 'my':
-                return Treatment_history.objects.filter(doc_name=Doctor.objects.filter(user=self.request.user)[0].id) 
+                try:
+                    return Treatment_history.objects.filter(doc_name=Doctor.objects.filter(user=self.request.user)[0].id) 
+                except:
+                    return Treatment_history.objects.all()
             else: 
                 return Treatment_history.objects.filter(diagnosis__exact=self.kwargs['stub'])
         except Treatment_history.DoesNotExist:
@@ -117,7 +121,7 @@ def HistoryDetailView(request, pk):
 
 class PacientCreate(CreateView):
     model = Pacient
-    fields = '__all__'
+    fields = '__all__'    
 
 class PacientUpdate(UpdateView):
     model = Pacient
@@ -126,6 +130,8 @@ class PacientUpdate(UpdateView):
 class TreatmentHistoryCreate(CreateView):
     model = Treatment_history
     fields = '__all__'
+    initial={'start_date_of_treatment': datetime.date.today(),}
+    
 
 class TreatmentHistoryUpdate(UpdateView):
     model = Treatment_history
