@@ -28,6 +28,6 @@
   </div>
   <a href="{% url 'pacients' 'all' %}">Вернуться</a>
 {% else %}
-  Вы не залогинены на этом сайте <u><a href="{% url 'login'%}?next={{request.path}}">залогиниться</a></u>
+  <meta http-equiv="refresh" content="1; URL={% url 'login'%}" />
 {% endif %}
 {% endblock %}

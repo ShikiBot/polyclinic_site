@@ -83,7 +83,7 @@ class TreatmentHistoryListView(generic.ListView):
                 try:
                     return Treatment_history.objects.filter(doc_name=Doctor.objects.filter(user=self.request.user)[0].id) 
                 except:
-                    return Treatment_history.objects.all()
+                    return Treatment_history.objects.filter(pk=-1)
             else: 
                 return Treatment_history.objects.filter(diagnosis__exact=self.kwargs['stub'])
         except Treatment_history.DoesNotExist:
