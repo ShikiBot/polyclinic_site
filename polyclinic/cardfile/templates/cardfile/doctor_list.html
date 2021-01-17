@@ -4,26 +4,41 @@
 {% if user.is_authenticated %}
     <h1>Список врачей</h1>
     <div class="filter">
-      <form>      
-        <select name="java-navigator" onchange="top.location.href = this.options[this.selectedIndex].value;">
-          <option value="">фильтр</option>
-          <option value="all">Все</option>
-          <option value="k2">Вторая квалификационная категория</option>
-          <option value="k1">Первая квалификационная категория</option>
-          <option value="k0">Высшая квалификационная категория</option>
-          <option value="s1">Хирург</option>
-          <option value="s2">Фельдшер</option>
-          <option value="s3">Терапевт</option>
-          <option value="s4">Стоматолог</option>
-          <option value="s5">Рентгенолог</option>
-          <option value="s6">Психотерапевт</option>
-          <option value="s7">Психиатр</option>
-          <option value="s8">Отоларинголог</option>
-          <option value="s9">Нарколог</option>
-          <option value="s10">Гинеколог</option>
-          <option value="s11">Педиатр</option>
+      <form>
+        <select name="java-navigator" onchange="  
+          var arrayOfStrings = window.location.href.split('/');         
+          var hrefString = arrayOfStrings[arrayOfStrings.length-1];         
+          if (hrefString == 'all') top.location.href = this.options[this.selectedIndex].value + '_ll';
+          else top.location.href = this.options[this.selectedIndex].value + '_' + hrefString.split('_')[1];">
+            <option value="">фильтр категорий</option>
+            <option value="a">все</option>
+            <option value="2">Вторая квалификационная категория</option>
+            <option value="1">Первая квалификационная категория</option>
+            <option value="0">Высшая квалификационная категория</option>
         </select>      
       </form>
+      <form>
+        <select name="java-navigator" onchange="
+          var arrayOfStrings = window.location.href.split('/');         
+          var hrefString = arrayOfStrings[arrayOfStrings.length-1];         
+          if (hrefString == 'all') top.location.href = 'a_' + this.options[this.selectedIndex].value;
+          else top.location.href = hrefString.split('_')[0] + '_' + this.options[this.selectedIndex].value;">
+            <option value="">фильтр специальностей</option>
+            <option value="ll">все</option>
+            <option value="1">Хирург</option>
+            <option value="2">Фельдшер</option>
+            <option value="3">Терапевт</option>
+            <option value="4">Стоматолог</option>
+            <option value="5">Рентгенолог</option>
+            <option value="6">Психотерапевт</option>
+            <option value="7">Психиатр</option>
+            <option value="8">Отоларинголог</option>
+            <option value="9">Нарколог</option>
+            <option value="10">Гинеколог</option>
+            <option value="11">Педиатр</option>
+        </select>      
+      </form>
+      <a href="{% url 'doctors' 'all' %}">сбросить фильтры</a>
     </div>
     {% if object_list %}
     <ul>

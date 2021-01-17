@@ -18,13 +18,16 @@ class DoctorListView(generic.ListView):
     paginate_by = 20
 
     def get_queryset(self, queryset=None):
-        try:
-            if self.kwargs['stub'] == 'all':
+        try:   
+            href = str(self.kwargs['stub'])         
+            if href == 'all' or href == 'a_ll':
                 return Doctor.objects.all()
-            elif self.kwargs['stub'][0] == 'k':
-                return Doctor.objects.filter(qualification__exact=self.kwargs['stub'][1]).order_by('name')
-            elif self.kwargs['stub'][0] == 's':
-                return Doctor.objects.filter(doc_specialty__exact=self.kwargs['stub'][1:]).order_by('name')
+            elif href.split('_')[0] == 'a':
+                return Doctor.objects.filter(doc_specialty__exact=href.split('_')[1]).order_by('name')
+            elif href.split('_')[1] == 'll':
+                return Doctor.objects.filter(qualification__exact=href.split('_')[0]).order_by('name')
+            else:
+                return Doctor.objects.filter(qualification__exact=href.split('_')[0]).filter(doc_specialty__exact=href.split('_')[1]).order_by('name')            
         except Doctor.DoesNotExist:
             raise Http404("Такого фильтра не существует")
 

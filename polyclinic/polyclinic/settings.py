@@ -26,7 +26,7 @@ SECRET_KEY = '&2u(glt!rm!jr0abyc9*(i=_dh#+2u^5auy0*s3o--=j)p2$@-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['polyclinic.ru']
 
 
 # Application definition
